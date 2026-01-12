@@ -1,0 +1,196 @@
+{% extends "common/base.html" %}
+{% block title %}果冻像素字体 / Jelly Pixel Font{% endblock %}
+{% block style %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        {% with font_family = 'jelly-pixel-12px-monospaced-latin' %}
+        @font-face {
+            font-family: {{ font_family }};
+            src: url("{{ font_family }}.otf.woff2");
+        }
+        {% endwith %}
+        {% for font_config in font_configs.values() %}
+        {% for locale, language_flavor in locale_to_language_flavor.items() %}
+        {% with font_family = 'jelly-pixel-' ~ font_config.font_size ~ 'px-proportional-' ~ language_flavor %}
+        @font-face {
+            font-family: {{ font_family }};
+            src: url("{{ font_family }}.otf.woff2");
+        }
+        .font-{{ font_config.font_size }}px-proportional :lang({{ locale }}) {
+            font-family: {{ font_family }}, sans-serif;
+        }
+        {% endwith %}
+        {% endfor %}
+        .font-{{ font_config.font_size }}px-proportional .title {
+            font-size: {{ font_config.font_size * 4 }}px;
+            font-weight: normal;
+            text-shadow: 2px 2px #4b4b4b;
+        }
+        .font-{{ font_config.font_size }}px-proportional .text {
+            font-size: {{ font_config.font_size * 2 }}px;
+            text-shadow: 2px 2px #4b4b4b;
+        }
+        .font-{{ font_config.font_size }}px-proportional .copyright {
+            font-size: {{ font_config.font_size * 2 }}px;
+            text-shadow: 2px 2px #4b4b4b;
+        }
+        .font-{{ font_config.font_size }}px-proportional .link-group {
+            margin-top: {{ font_config.font_size // 2 }}px;
+            margin-bottom: {{ font_config.font_size // 2 }}px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .font-{{ font_config.font_size }}px-proportional .link-tab {
+            margin-left: {{ font_config.font_size }}px;
+            margin-right: {{ font_config.font_size }}px;
+            font-size: {{ font_config.font_size * 2 }}px;
+            text-shadow: 2px 2px #4b4b4b;
+        }
+        {% endfor %}
+        body {
+            color: white;
+        }
+        a {
+            color: white;
+        }
+        @keyframes background-scrolling {
+            100% {
+                background-position: 96px 96px;
+            }
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: -1;
+            background-color: #e53935;
+            background-image: linear-gradient(45deg, #ef5350 25%, transparent 25%, transparent 75%, #ef5350 75%), linear-gradient(-45deg, #ef5350 25%, transparent 25%, transparent 75%, #ef5350 75%);
+            background-size: 96px 96px;
+            background-attachment: fixed;
+            animation: background-scrolling 4s infinite linear;
+        }
+        .options-group {
+            height: 36px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            background-color: red;
+            box-shadow: 0 1px 8px rgba(75, 75, 75, 0.8);
+        }
+        .option {
+            height: 100%;
+            margin-left: 24px;
+            margin-right: 24px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            color: white;
+            font-family: jelly-pixel-12px-monospaced-latin, sans-serif;
+            font-size: 24px;
+            line-height: 36px;
+        }
+        .option input[type="radio"] {
+            display: none;
+        }
+        .option input[type="radio"] + span {
+            width: 10px;
+            height: 10px;
+            margin-left: 12px;
+            margin-right: 12px;
+            border-width: 2px;
+            border-color: white;
+            border-style: solid;
+        }
+        .option input[type="radio"]:checked + span {
+            background-color: white;
+        }
+        #page {
+            margin-top: 64px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="options-group">
+        {% for font_config in font_configs.values() %}
+        <label class="option">
+            <input id="radio-font-size-{{ font_config.font_size }}" name="font_size" type="radio" onchange="onFontSizeChange('{{ font_config.font_size }}')">
+            <span></span>
+            {{ font_config.font_size }}px
+        </label>
+        {% endfor %}
+    </div>
+    <div id="page">
+        <h1 class="title" lang="zh-cn">果冻像素字体 / Jelly Pixel Font</h1>
+        <br>
+        <div class="text" lang="zh-cn">★ 开源的泛中日韩像素字体 ★</div>
+        <div class="link-group" lang="en">
+            <a class="link-tab" href="https://github.com/TakWolf/jelly-pixel-font" target="_blank">github</a>
+            <a class="link-tab" href="https://takwolf.itch.io/jelly-pixel-font" target="_blank">itch.io</a>
+            <a class="link-tab" href="https://discord.gg/3GKtPKtjdU" target="_blank">discord</a>
+        </div>
+        <br>
+        <div class="text" lang="zh-cn">我们度过的每个平凡的日常，也许就是连续发生的奇迹。</div>
+        <div class="text" lang="zh-tr">我們度過的每個平凡的日常，也許就是連續發生的奇蹟。</div>
+        <div class="text" lang="ja">日々、私たちが過ごしている日常は、実は奇跡の連続なのかもしれない。</div>
+        <div class="text" lang="en">THE QUICK BROWN FOX JUMPS OVER A LAZY DOG.</div>
+        <div class="text" lang="en">the quick brown fox jumps over a lazy dog.</div>
+        <div class="text" lang="en">0123456789</div>
+        <div class="text" lang="en">★☆☺☹♠♡♢♣♤♥♦♧☀☼♩♪♫♬☂☁⚓✈⚔☯</div>
+        <br>
+        <div class="link-group" lang="en">
+            <a class="link-tab" href="playground.html" target="_blank">playground</a>
+        </div>
+        {% for font_config in font_configs.values() %}
+        <div class="link-group" lang="en">
+            <span class="link-tab">{{ font_config.font_size }}px</span>
+            {% for width_mode in width_modes %}
+            <a class="link-tab" href="alphabet-{{ font_config.font_size }}px-{{ width_mode }}.html" target="_blank">alphabet-{{ width_mode }}</a>
+            {% endfor %}
+            <a class="link-tab" href="demo-{{ font_config.font_size }}px.html" target="_blank">demo</a>
+        </div>
+        {% endfor %}
+        <br>
+        <div class="copyright" lang="en">© 2026 TakWolf</div>
+    </div>
+    <script type="module">
+        const settings = {
+            fontSize: 12,
+        }
+        const json = localStorage.getItem('settings:index')
+        if (json) {
+            Object.assign(settings, JSON.parse(json))
+        }
+
+        const page = document.getElementById('page')
+
+        window.applySettings = () => {
+            localStorage.setItem('settings:index', JSON.stringify(settings))
+            page.className = 'font-' + settings.fontSize + 'px-proportional'
+        }
+
+        window.onFontSizeChange = fontSize => {
+            settings.fontSize = fontSize
+            window.applySettings()
+        }
+
+        document.getElementById('radio-font-size-' + settings.fontSize).checked = true
+        window.applySettings()
+    </script>
+{% endblock %}
