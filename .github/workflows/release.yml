@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        font-size: [12]
+        width-mode: [monospaced, proportional]
+        font-format: [otf, otf.woff, otf.woff2, ttf, ttf.woff, ttf.woff2, bdf, pcf]
+      fail-fast: false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+      - name: Install dependencies
+        run: uv sync
+      - name: Build
+        run: uv run -m tools.cli --cleanup --font-sizes ${{ matrix.font-size }} --width-modes ${{ matrix.width-mode }} --font-formats ${{ matrix.font-format }} --attachments release
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./build/releases/*.zip
