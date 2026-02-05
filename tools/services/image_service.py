@@ -53,6 +53,8 @@ def _draw_text_background(
 ):
     draw = ImageDraw.Draw(image)
     alphabet = [c for c in alphabet if 0x4E00 <= ord(c) <= 0x9FFF]
+    if not alphabet:
+        alphabet.append('\u3000')
     count_x = math.ceil(image.width / box_size)
     count_y = math.ceil(image.height / box_size)
     offset_x = (image.width - count_x * box_size) / 2 + (box_size - font.size) / 2
