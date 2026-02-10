@@ -11,6 +11,10 @@
 
 开源的泛拉丁与泛中日韩像素字体，圆体风格。
 
+> [!WARNING]
+> 
+> 该字体目前仅用于概念验证，尚未完工，暂无可用实例。
+
 ## 预览
 
 [点击此链接](https://jelly-pixel-font.takwolf.com/playground.html) 实时预览字体效果。
