@@ -1,5 +1,5 @@
 
-VERSION = '2026.09.01'
+VERSION = '2026.09.25'
 
 FAMILY_NAME_PREFIX = 'Jelly Pixel'
 FILE_NAME_PREFIX = 'jelly-pixel'
