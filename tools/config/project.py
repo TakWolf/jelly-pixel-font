@@ -1,5 +1,5 @@
 
-VERSION = '2026.10.16'
+VERSION = '2026.10.25'
 
 NAME = 'Jelly Pixel Font'
 NAME_ZH = '果冻像素字体'
